@@ -1,0 +1,56 @@
+  <script>
+        const lumy = document.getElementById("lumy");
+        const eyes = document.querySelectorAll(".eye");
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+
+        document.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function moveLumy() {
+            const lumyX = parseFloat(getComputedStyle(lumy).left) || window.innerWidth / 2;
+            const lumyY = parseFloat(getComputedStyle(lumy).top) || window.innerHeight / 2;
+            const dx = (mouseX - lumyX) * 0.05;
+            const dy = (mouseY - lumyY) * 0.05;
+
+            lumy.style.left = `${lumyX + dx}px`;
+            lumy.style.top = `${lumyY + dy}px`;
+            requestAnimationFrame(moveLumy);
+        }
+        moveLumy();
+
+        function moveEyes(event) {
+            let x = (event.clientX / window.innerWidth) * 40 - 20;
+            let y = (event.clientY / window.innerHeight) * 20 - 10;
+            eyes.forEach(eye => {
+                eye.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        }
+
+        document.addEventListener("mousemove", moveEyes);
+
+        function blink() {
+            eyes.forEach(eye => eye.style.animation = "blink 0.2s ease-in-out");
+            setTimeout(() => eyes.forEach(eye => eye.style.animation = ""), 200);
+        }
+        setInterval(blink, 3000);
+
+        const messages = [
+            "💖 تو همیشه بهترین و مهربون‌ترین هستی! 💖",
+            "✨ با تو همه‌چیز روشن‌تر و زیباتره! ✨",
+            "🌟 دلم همیشه برای لحظه‌های با تو بودن تنگ میشه! 🌟",
+            "💫 همه‌چیز با تو پر از عشق و شادی میشه! 💫"
+        ];
+
+        function getRandomMessage() {
+            return messages[Math.floor(Math.random() * messages.length)];
+        }
+
+        function showMessage() {
+            const messageElement = document.getElementById('loveMessage');
+            messageElement.innerHTML = getRandomMessage();
+            messageElement.style.opacity = "1";
+            messageElement.style.transform = "translate(-50%, -50%) scale(1)";
+        }
+    </script
