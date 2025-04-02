@@ -1,0 +1,37 @@
+name: Deploy Lumy Avatar to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # اگر شاخه‌ی دیگری داری، اینجا اسم اون رو بنویس
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the code from GitHub
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Set up Node.js if لازم باشه برای پروژه‌ات
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      # Install dependencies (اگر پروژه نیاز به npm یا yarn داشته باشه)
+      - name: Install dependencies
+        run: npm install
+
+      # ساخت پروژه (اگر نیازی به build باشه)
+      - name: Build the project
+        run: npm run build # اگر نیازی به build نداشته باشی این مرحله رو می‌تونی حذف کنی
+
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages # این بخش نشون‌دهنده‌ی شاخه‌ایه که سایت روی اون دیپلوی میشه
+          folder: dist # این پوشه‌ باید شامل فایل‌های ساخته شده برای دیپلوی بشه (مثل index.html)
+          token: ${{ secrets.GITHUB_TOKEN }}
